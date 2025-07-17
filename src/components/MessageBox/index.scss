@@ -1,0 +1,16 @@
+.message-box {
+    &.hide-btns .ant-modal-confirm-btns {
+        display: none;
+    }
+
+    &__title {
+        position: relative;
+
+        .title-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+        }
+    }
+}

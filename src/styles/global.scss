@@ -1,0 +1,21 @@
+@import './reset.css';
+
+html {
+    font-size: 4px; // 方便 unocss 换算，1rem = 4px unocss 是以 0.25rem 为单位
+}
+
+body {
+    font-size: 14px;
+}
+
+#app {
+    min-height: 100vh;
+    font-size: 14px;
+    color: #333;
+
+    [class*='-avatar'] {
+        > img {
+            width: 100%;
+        }
+    }
+}

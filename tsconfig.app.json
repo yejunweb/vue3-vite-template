@@ -1,0 +1,32 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": ["types/**/*", "src/**/*", "src/config.json"],
+    "exclude": ["src/**/__tests__/*"],
+    "compilerOptions": {
+        "composite": true,
+        "target": "esnext",
+        "useDefineForClassFields": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "noImplicitThis": true,
+        "strict": true,
+        "jsx": "preserve",
+        "jsxImportSource": "vue",
+        "verbatimModuleSyntax": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "newLine": "lf",
+        "lib": ["esnext", "dom"],
+        "types": ["vite/client"],
+        "paths": {
+            "@src/*": ["src/*"],
+            "@/*": ["src/*"]
+        }
+    }
+}
