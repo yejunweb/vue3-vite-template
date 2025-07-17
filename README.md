@@ -8,6 +8,15 @@
 yarn config set electron_mirror https://registry.npmmirror.com/-/binary/electron/
 ```
 
+### electron 核心目录
+
+```
+├─electron-env.d.ts // ts 配置⽂件
+├─main.ts // 主进程脚本
+├─preload.ts // 预加载脚本
+├─utils.ts // ⼯具类
+```
+
 ### 使用该模板前请先修改以下变量
 
 ```
@@ -110,7 +119,15 @@ VITE_DROP_DEBUG=true
 ##### 是否开启本地 https
 
 ```
-// .env.development
+// .env
 
 VITE_LISTEN_HTTPS=false
+```
+
+##### 是否启用 electron（不启用则作为普通 WebApp）
+
+```
+// .env
+
+VITE_LISTEN_HTTPS=true
 ```
