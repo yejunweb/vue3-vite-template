@@ -1,6 +1,12 @@
-# Vue3 + vite 模版
+# Vue3 + vite + electron 模版
 
--   分支 main 是 ts 基础模板
+-   分支 main-electron 是 ts + electron 基础模板
+
+### 解决 electron 下载速度过慢的问题
+
+```
+yarn config set electron_mirror https://registry.npmmirror.com/-/binary/electron/
+```
 
 ### 使用该模板前请先修改以下变量
 

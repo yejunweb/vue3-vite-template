@@ -10,6 +10,8 @@ import { officialPluginInspect } from './officialPluginInspect';
 import { communityPluginCompression2 } from './communityPluginCompression2';
 import { communityPluginCertificate } from './communityPluginCertificate';
 import { communityPluginSvgIcons } from './communityPluginSvgIcons';
+import { communityPluginElectron } from './communityPluginElectron';
+import { communityPluginElectronRenderer } from './communityPluginElectronRenderer';
 import { isEnvTrue } from '../../utils';
 
 export const createVitePlugins = ({ command }: ConfigEnv, viteEnv: ImportMetaEnv) => {
@@ -25,6 +27,8 @@ export const createVitePlugins = ({ command }: ConfigEnv, viteEnv: ImportMetaEnv
         unoCSSPluginUnoCSS(),
         officialPluginInspect(),
         communityPluginSvgIcons(isBuild),
+        communityPluginElectron(),
+        communityPluginElectronRenderer(),
     ];
 
     if (VITE_UNPLUGINS_IMPORTS) plugins.push(...unpluginPluginAutoImport(viteEnv));

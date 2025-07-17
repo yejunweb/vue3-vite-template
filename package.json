@@ -1,5 +1,6 @@
 {
     "name": "vue3-vite-template",
+    "main": "dist-electron/main.js",
     "version": "1.0.0",
     "license": "GPL-3.0-only",
     "scripts": {
@@ -29,6 +30,8 @@
         "crypto-js": "4.2.0",
         "dayjs": "1.11.11",
         "echarts": "5.5.1",
+        "electron": "^37.2.3",
+        "electron-builder": "^26.0.12",
         "lodash": "4.17.21",
         "pinia": "2.1.7",
         "vue": "3.4.31",
@@ -78,6 +81,8 @@
         "unplugin-vue-components": "0.27.2",
         "vite": "5.3.3",
         "vite-plugin-compression2": "1.1.2",
+        "vite-plugin-electron": "0.29.0",
+        "vite-plugin-electron-renderer": "^0.14.6",
         "vite-plugin-env-types": "0.1.4",
         "vite-plugin-inspect": "0.8.4",
         "vite-plugin-mkcert": "1.17.5",

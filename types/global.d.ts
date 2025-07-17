@@ -33,6 +33,16 @@ declare global {
         path?: EventTarget[];
     }
 
+    // contextBridge
+    interface Window {
+        ipcRenderer: {
+            on(channel: string, listener: (event: any, ...args: any[]) => void): void;
+            off(channel: string, ...args: any[]): void;
+            send(channel: string, ...args: any[]): void;
+            invoke(channel: string, ...args: any[]): void;
+        };
+    }
+
     type ComponentInstance = ComponentPublicInstance<{}, any>;
 
     type RequiredParams<T> = T extends (...args: infer P) => infer R ? (...args: { [K in keyof P]-?: NonNullable<P[K]> }) => R : never;

@@ -8,7 +8,7 @@ const srcDir = fileURLToPath(new URL('./src', import.meta.url));
 // https://vitejs.dev/config/
 export default (configEnv: ConfigEnv): UserConfig => {
     const viteEnv = loadEnv(configEnv.mode, envDir) as ImportMetaEnv;
-    const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE, VITE_DROP_DEBUG, VITE_LISTEN_HTTPS } = viteEnv;
+    const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE, VITE_DROP_DEBUG } = viteEnv;
     return {
         base: VITE_PUBLIC_PATH,
         envDir,
