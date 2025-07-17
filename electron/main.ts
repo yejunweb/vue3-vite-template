@@ -1,5 +1,6 @@
 import path from 'path';
 import { app, BrowserWindow, ipcMain } from 'electron';
+import { log } from './utils';
 
 const isDevMode = (): boolean => process.env.NODE_ENV === 'development';
 
@@ -45,7 +46,7 @@ function createWindow() {
 
 // 监听渲染进程信息
 ipcMain.on('message-from-renderer', (_event, message) => {
-    console.log('message-from-renderer: ', message);
+    log.info('message-from-renderer: ', message);
 });
 
 // 当所有的窗口都被关闭时触发
