@@ -5,6 +5,7 @@ import { isEnvTrue } from './config/utils';
 
 const envDir = fileURLToPath(new URL('env', import.meta.url));
 const srcDir = fileURLToPath(new URL('./src', import.meta.url));
+
 // https://vitejs.dev/config/
 export default (configEnv: ConfigEnv): UserConfig => {
     const viteEnv = loadEnv(configEnv.mode, envDir) as ImportMetaEnv;

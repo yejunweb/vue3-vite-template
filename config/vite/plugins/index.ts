@@ -16,7 +16,7 @@ import { isEnvTrue } from '../../utils';
 
 export const createVitePlugins = ({ command }: ConfigEnv, viteEnv: ImportMetaEnv) => {
     const isBuild = command === 'build';
-    const { VITE_LEGACY, VITE_LISTEN_HTTPS, VITE_UNPLUGINS_IMPORTS } = viteEnv;
+    const { VITE_LEGACY, VITE_LISTEN_HTTPS, VITE_UNPLUGINS_IMPORTS, VITE_USE_ELECTRON } = viteEnv;
     const lifecycle = process.env.npm_lifecycle_event;
     // https://github.com/vitejs/awesome-vite#plugins
     // vite-plugin-pages // 自动根据目录生成路由
@@ -27,11 +27,11 @@ export const createVitePlugins = ({ command }: ConfigEnv, viteEnv: ImportMetaEnv
         unoCSSPluginUnoCSS(),
         officialPluginInspect(),
         communityPluginSvgIcons(isBuild),
-        communityPluginElectron(),
-        communityPluginElectronRenderer(),
     ];
 
     if (VITE_UNPLUGINS_IMPORTS) plugins.push(...unpluginPluginAutoImport(viteEnv));
+
+    if (isEnvTrue(VITE_USE_ELECTRON)) plugins.push(communityPluginElectron(), communityPluginElectronRenderer());
 
     if (isEnvTrue(VITE_LISTEN_HTTPS)) plugins.push(communityPluginCertificate());
 
