@@ -33,7 +33,7 @@ declare global {
         path?: EventTarget[];
     }
 
-    // contextBridge
+    // Used in Renderer process, expose in `preload.ts`
     interface Window {
         ipcRenderer: {
             on(channel: string, listener: (event: any, ...args: any[]) => void): void;

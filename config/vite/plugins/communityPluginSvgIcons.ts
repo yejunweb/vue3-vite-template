@@ -1,5 +1,5 @@
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
-import path from 'path';
+import path from 'node:path';
 
 export const communityPluginSvgIcons = (isBuild: boolean) =>
     createSvgIconsPlugin({

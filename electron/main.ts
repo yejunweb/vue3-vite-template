@@ -1,8 +1,9 @@
 import path from 'path';
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { log } from './utils';
+import { log, isDevMode, VITE_DEV_SERVER_URL } from './utils';
 
-const isDevMode = (): boolean => process.env.NODE_ENV === 'development';
+process.env.APP_ROOT = path.join(__dirname, '../');
+process.env.VITE_PUBLIC = path.join(process.env.APP_ROOT, isDevMode() ? 'public' : 'dist');
 
 // 屏蔽 Electron 的安全警告
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -16,7 +17,7 @@ let win: BrowserWindow | null;
 
 function createWindow() {
     win = new BrowserWindow({
-        icon: isDevMode() ? path.join(__dirname, '../public/logo.png') : path.join(__dirname, '../dist/logo.png'),
+        icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
         webPreferences: {
             preload: path.join(__dirname, './preload.js'),
         },
@@ -36,11 +37,11 @@ function createWindow() {
         }, 3000);
     });
 
-    if (isDevMode()) {
-        win.loadURL(`http://localhost:${import.meta.env.VITE_PORT}/`);
+    if (VITE_DEV_SERVER_URL) {
+        win.loadURL(VITE_DEV_SERVER_URL);
         win.webContents.openDevTools(); // 开发环境默认打开开发者工具
     } else {
-        win.loadFile(path.join(__dirname, '../dist/index.html'));
+        win.loadFile(path.join(process.env.VITE_PUBLIC, 'index.html'));
     }
 }
 
