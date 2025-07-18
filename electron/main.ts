@@ -17,7 +17,7 @@ let win: BrowserWindow | null;
 
 function createWindow() {
     win = new BrowserWindow({
-        icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+        icon: path.join(process.env.VITE_PUBLIC, 'favicon.png'),
         webPreferences: {
             preload: path.join(__dirname, './preload.js'),
         },
@@ -36,6 +36,11 @@ function createWindow() {
             clearTimeout(timer);
         }, 3000);
     });
+
+    // 创建 Dock 图标、解决 Mac 端图标不显示的问题
+    if (process.platform === 'darwin' && app.dock) {
+        app.dock.setIcon(path.join(process.env.VITE_PUBLIC, 'favicon.png'));
+    }
 
     if (VITE_DEV_SERVER_URL) {
         win.loadURL(VITE_DEV_SERVER_URL);
