@@ -11,19 +11,19 @@
     "less.validate": false, // 禁用 LESS 内置验证
 
     "typescript.tsdk": "node_modules\\typescript\\lib",
-    "explorer.fileNesting.enabled": true,
-    "explorer.fileNesting.expand": false,
-    "explorer.fileNesting.patterns": {
-        "README.md": "index.html,favicon.ico,robots.txt,CHANGELOG.md",
-        "docker.md": "Dockerfile,docker*.md,nginx*,.dockerignore",
-        "pages.config.ts": "manifest.config.ts,openapi-ts-request.config.ts",
-        "package.json": "tsconfig.json,pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,.npmrc,.browserslistrc",
-        "eslint.config.mjs": ".commitlintrc.*,.prettier*,.editorconfig,.commitlint.cjs,.eslint*"
-    },
+    // "explorer.fileNesting.enabled": true,
+    // "explorer.fileNesting.expand": false,
+    // "explorer.fileNesting.patterns": {
+    //     "README.md": "index.html,favicon.ico,robots.txt,CHANGELOG.md",
+    //     "docker.md": "Dockerfile,docker*.md,nginx*,.dockerignore",
+    //     "pages.config.ts": "manifest.config.ts,openapi-ts-request.config.ts",
+    //     "package.json": "tsconfig.json,pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,.npmrc,.browserslistrc",
+    //     "eslint.config.mjs": ".commitlintrc.*,.prettier*,.editorconfig,.commitlint.cjs,.eslint*"
+    // },
 
     // Disable the default formatter, use eslint instead
     "prettier.enable": false,
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
 
     // Auto fix
     "editor.codeActionsOnSave": {
@@ -32,18 +32,18 @@
     },
 
     // Silent the stylistic rules in you IDE, but still auto fix them
-    "eslint.rules.customizations": [
-        { "rule": "style/*", "severity": "off", "fixable": true },
-        { "rule": "format/*", "severity": "off", "fixable": true },
-        { "rule": "*-indent", "severity": "off", "fixable": true },
-        { "rule": "*-spacing", "severity": "off", "fixable": true },
-        { "rule": "*-spaces", "severity": "off", "fixable": true },
-        { "rule": "*-order", "severity": "off", "fixable": true },
-        { "rule": "*-dangle", "severity": "off", "fixable": true },
-        { "rule": "*-newline", "severity": "off", "fixable": true },
-        { "rule": "*quotes", "severity": "off", "fixable": true },
-        { "rule": "*semi", "severity": "off", "fixable": true }
-    ],
+    // "eslint.rules.customizations": [
+    //     { "rule": "style/*", "severity": "off", "fixable": true },
+    //     { "rule": "format/*", "severity": "off", "fixable": true },
+    //     { "rule": "*-indent", "severity": "off", "fixable": true },
+    //     { "rule": "*-spacing", "severity": "off", "fixable": true },
+    //     { "rule": "*-spaces", "severity": "off", "fixable": true },
+    //     { "rule": "*-order", "severity": "off", "fixable": true },
+    //     { "rule": "*-dangle", "severity": "off", "fixable": true },
+    //     { "rule": "*-newline", "severity": "off", "fixable": true },
+    //     { "rule": "*quotes", "severity": "off", "fixable": true },
+    //     { "rule": "*semi", "severity": "off", "fixable": true }
+    // ],
 
     // Enable eslint for all supported languages
     "eslint.validate": [
@@ -92,5 +92,14 @@
         "Wechat",
         "WechatMiniprogram",
         "Weixin"
-    ]
+    ],
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar"
+    }
 }
