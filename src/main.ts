@@ -8,12 +8,12 @@ import '@/style/index.scss'
 import 'virtual:uno.css'
 
 export function createApp() {
-  const app = createSSRApp(App)
-  app.use(store)
-  app.use(routeInterceptor)
-  app.use(requestInterceptor)
+    const app = createSSRApp(App)
+    app.use(store)
+    app.use(routeInterceptor)
+    app.use(requestInterceptor)
 
-  return {
-    app,
-  }
+    return {
+        app,
+    }
 }

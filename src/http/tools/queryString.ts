@@ -5,25 +5,25 @@
  * @returns 序列化后的查询字符串
  */
 export function stringifyQuery(obj: Record<string, any>): string {
-  if (!obj || typeof obj !== 'object' || Array.isArray(obj))
-    return ''
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj))
+        return ''
 
-  return Object.entries(obj)
-    .filter(([_, value]) => value !== undefined && value !== null)
-    .map(([key, value]) => {
-      // 对键进行编码
-      const encodedKey = encodeURIComponent(key)
+    return Object.entries(obj)
+        .filter(([_, value]) => value !== undefined && value !== null)
+        .map(([key, value]) => {
+            // 对键进行编码
+            const encodedKey = encodeURIComponent(key)
 
-      // 处理数组类型
-      if (Array.isArray(value)) {
-        return value
-          .filter(item => item !== undefined && item !== null)
-          .map(item => `${encodedKey}=${encodeURIComponent(item)}`)
-          .join('&')
-      }
+            // 处理数组类型
+            if (Array.isArray(value)) {
+                return value
+                    .filter(item => item !== undefined && item !== null)
+                    .map(item => `${encodedKey}=${encodeURIComponent(item)}`)
+                    .join('&')
+            }
 
-      // 处理基本类型
-      return `${encodedKey}=${encodeURIComponent(value)}`
-    })
-    .join('&')
+            // 处理基本类型
+            return `${encodedKey}=${encodeURIComponent(value)}`
+        })
+        .join('&')
 }
