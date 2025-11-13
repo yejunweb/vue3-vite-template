@@ -96,7 +96,7 @@ export const useTokenStore = defineStore(
             login,
             logout,
 
-            // 认证状态判断（最常用的）
+            // 认证状态判断
             hasLogin,
 
             // 调试或特殊场景可能需要直接访问的信息

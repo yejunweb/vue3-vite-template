@@ -1,4 +1,4 @@
-import type { CustomRequestOptions, IResponse } from '@/http/types'
+import type { CustomInstanceOptions, CustomRequestOptions, IResponse } from '@/http/types'
 import { useTokenStore } from '@/store/token'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ResultEnum } from './tools/enum'
@@ -67,7 +67,7 @@ export function http<T>(options: CustomRequestOptions) {
  * @param header 请求头，默认为json格式
  * @returns
  */
-export function httpGet<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpGet<T>({ url, query, header, options }: CustomInstanceOptions) {
     return http<T>({
         url,
         query,
@@ -85,7 +85,7 @@ export function httpGet<T>(url: string, query?: Record<string, any>, header?: Re
  * @param header 请求头，默认为json格式
  * @returns
  */
-export function httpPost<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpPost<T>({ url, data, query, header, options }: CustomInstanceOptions) {
     return http<T>({
         url,
         query,
@@ -99,7 +99,7 @@ export function httpPost<T>(url: string, data?: Record<string, any>, query?: Rec
 /**
  * PUT 请求
  */
-export function httpPut<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpPut<T>({ url, data, query, header, options }: CustomInstanceOptions) {
     return http<T>({
         url,
         data,
@@ -113,7 +113,7 @@ export function httpPut<T>(url: string, data?: Record<string, any>, query?: Reco
 /**
  * DELETE 请求（无请求体，仅 query）
  */
-export function httpDelete<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpDelete<T>({ url, query, header, options }: CustomInstanceOptions) {
     return http<T>({
         url,
         query,

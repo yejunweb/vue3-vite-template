@@ -1,7 +1,7 @@
 import { ref } from 'vue'
-import { getEnvBaseUrl } from '@/utils/index'
+import { API_DOMAINS } from '@/utils/index'
 
-const VITE_UPLOAD_BASEURL = `${getEnvBaseUrl()}/upload`
+const VITE_UPLOAD_BASEURL = `${API_DOMAINS.DEFAULT}/upload`
 
 type TfileType = 'image' | 'file'
 type TImage = 'png' | 'jpg' | 'jpeg' | 'webp' | '*'
@@ -82,8 +82,8 @@ export default function useUpload<T extends TfileType>(options: TOptions<T> = {}
     }
 
     const run = () => {
-    // 微信小程序从基础库 2.21.0 开始， wx.chooseImage 停止维护，请使用 uni.chooseMedia 代替。
-    // 微信小程序在2023年10月17日之后，使用本API需要配置隐私协议
+        // 微信小程序从基础库 2.21.0 开始， wx.chooseImage 停止维护，请使用 uni.chooseMedia 代替。
+        // 微信小程序在2023年10月17日之后，使用本API需要配置隐私协议
         const chooseFileOptions = {
             count: 1,
             success: (res: any) => {

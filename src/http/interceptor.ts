@@ -1,18 +1,18 @@
 import type { CustomRequestOptions } from '@/http/types'
 import { useTokenStore } from '@/store'
-import { getEnvBaseUrl } from '@/utils'
+import { API_DOMAINS } from '@/utils'
 import { stringifyQuery } from './tools/queryString'
 
 // 请求基准地址
-const baseUrl = getEnvBaseUrl()
+const baseUrl = API_DOMAINS.DEFAULT
 
 // 拦截器配置
 const httpInterceptor = {
     // 拦截前触发
     invoke(options: CustomRequestOptions) {
-    // 如果您使用了alova，则请把下面的代码放开注释
-    // alova 执行流程：alova beforeRequest --> 本拦截器 --> alova responded
-    // return options
+        // 如果您使用了alova，则请把下面的代码放开注释
+        // alova 执行流程：alova beforeRequest --> 本拦截器 --> alova responded
+        // return options
 
         // 非 alova 请求，正常执行
         // 接口请求支持通过 query 参数配置 queryString
@@ -40,7 +40,6 @@ const httpInterceptor = {
             // #ifndef H5
             options.url = baseUrl + options.url
             // #endif
-            // TIPS: 如果需要对接多个后端服务，也可以在这里处理，拼接成所需要的地址
         }
         // 1. 请求超时
         options.timeout = 60000 // 60s
@@ -50,8 +49,7 @@ const httpInterceptor = {
         }
         // 3. 添加 token 请求头标识
         const tokenStore = useTokenStore()
-        const token = tokenStore.validToken
-
+        const token = tokenStore.tokenInfo.token
         if (token) {
             options.header.Authorization = `Bearer ${token}`
         }
@@ -61,7 +59,7 @@ const httpInterceptor = {
 
 export const requestInterceptor = {
     install() {
-    // 拦截 request 请求
+        // 拦截 request 请求
         uni.addInterceptor('request', httpInterceptor)
         // 拦截 uploadFile 文件上传
         uni.addInterceptor('uploadFile', httpInterceptor)
