@@ -25,7 +25,7 @@ onLoad(() => {
 <template>
     <view class="bg-white px-4 pt-safe">
         <view class="mt-10">
-            <image src="/static/logo.svg" alt="" class="mx-auto block h-28 w-28" />
+            <image src="/static/logo.png" alt="" class="mx-auto block h-28 w-28" />
         </view>
         <view class="mt-4 text-center text-4xl text-[#d14328]">
             unibest
