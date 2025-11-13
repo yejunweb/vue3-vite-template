@@ -10,15 +10,14 @@ import { ContentTypeEnum, ResultEnum, ShowMessage } from './tools/enum'
 // 配置动态Tag
 export const API_DOMAINS = {
     DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
-    SECONDARY: import.meta.env.VITE_SERVER_BASEURL_SECONDARY,
 }
 
 /**
  * 创建请求实例
  */
 const { onAuthRequired, onResponseRefreshToken } = createServerTokenAuthentication<
-  typeof VueHook,
-  typeof uniappRequestAdapter
+    typeof VueHook,
+    typeof uniappRequestAdapter
 >({
     // 如果下面拦截不到，请使用 refreshTokenOnSuccess by 群友@琛
     refreshTokenOnError: {
@@ -48,7 +47,7 @@ const alovaInstance = createAlova({
     statesHook: VueHook,
 
     beforeRequest: onAuthRequired((method) => {
-    // 设置默认 Content-Type
+        // 设置默认 Content-Type
         method.config.headers = {
             ContentType: ContentTypeEnum.JSON,
             Accept: 'application/json, text/plain, */*',
