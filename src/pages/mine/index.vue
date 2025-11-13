@@ -17,16 +17,9 @@ const { userInfo } = storeToRefs(userStore)
 
 // 微信小程序下登录
 async function handleLogin() {
-    // #ifdef MP-WEIXIN
-    // 微信登录
-    await tokenStore.wxLogin()
-
-    // #endif
-    // #ifndef MP-WEIXIN
     uni.navigateTo({
         url: `${LOGIN_PAGE}`,
     })
-    // #endif
 }
 
 function handleLogout() {
@@ -42,14 +35,7 @@ function handleLogout() {
                     title: '退出登录成功',
                     icon: 'success',
                 })
-                // #ifdef MP-WEIXIN
-                // 微信小程序，去首页
-                // uni.reLaunch({ url: '/pages/index/index' })
-                // #endif
-                // #ifndef MP-WEIXIN
-                // 非微信小程序，去登录页
-                // uni.navigateTo({ url: LOGIN_PAGE })
-                // #endif
+                uni.navigateTo({ url: LOGIN_PAGE })
             }
         },
     })

@@ -3,6 +3,7 @@ import { useTokenStore } from '@/store/token'
 
 definePage({
     style: {
+        navigationStyle: 'custom',
         navigationBarTitleText: '登录',
     },
 })

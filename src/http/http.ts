@@ -25,7 +25,7 @@ export function http<T>(options: CustomRequestOptions) {
                     // 清理用户信息
                     tokenStore.logout()
                     // 切换到登录页
-                    toLoginPage({ mode: 'reLaunch' })
+                    toLoginPage()
                     return reject(res)
                 }
 
