@@ -22,9 +22,10 @@ export function http<T>(options: CustomRequestOptions) {
 
                 if (isTokenExpired) {
                     const tokenStore = useTokenStore()
-                    // 清理用户信息，跳转到登录页
+                    // 清理用户信息
                     tokenStore.logout()
-                    toLoginPage()
+                    // 切换到登录页
+                    toLoginPage({ mode: 'reLaunch' })
                     return reject(res)
                 }
 
