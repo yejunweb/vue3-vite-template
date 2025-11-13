@@ -17,8 +17,6 @@ export default uniHelper({
         // 插件生成的文件
         'src/pages.json',
         'src/manifest.json',
-        // 忽略自动生成文件
-        'src/service/**',
     ],
     // https://eslint-config.antfu.me/rules
     rules: {
