@@ -71,9 +71,7 @@ export default defineConfig(({ command, mode }) => {
                 exclude: ['**/components/**/**.*'],
                 // pages 目录为 src/pages，分包目录不能配置在pages目录下！！
                 // 是个数组，可以配置多个，但是不能为pages里面的目录！！
-                subPackages: [
-                    'src/pages-fg', // 这个是相对必要的路由，尽量留着（登录页、注册页、404页等）
-                ],
+                subPackages: [],
                 dts: 'src/types/uni-pages.d.ts',
             }),
             // Optimization 插件需要 page.json 文件，故应在 UniPages 插件之后执行

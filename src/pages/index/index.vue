@@ -43,7 +43,7 @@ onLoad(() => {
                 菲鸽
             </text>
         </view>
-        <view class="mt-4 text-center">
+        <view class="i-my-icons-copyright mt-4 text-center">
             官网地址：
             <text class="text-green-500">
                 https://unibest.tech
