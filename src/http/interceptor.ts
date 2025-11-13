@@ -49,7 +49,7 @@ const httpInterceptor = {
         }
         // 3. 添加 token 请求头标识
         const tokenStore = useTokenStore()
-        const token = tokenStore.tokenInfo.token
+        const token = tokenStore.tokenInfo?.token
         if (token) {
             options.header.Authorization = `Bearer ${token}`
         }
