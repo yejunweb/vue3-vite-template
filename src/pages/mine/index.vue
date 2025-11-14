@@ -26,16 +26,16 @@ function handleLogout() {
     uni.showModal({
         title: '提示',
         content: '确定要退出登录吗？',
-        success: (res) => {
+        success: async (res) => {
             if (res.confirm) {
                 // 清空用户信息
-                useTokenStore().logout()
+                await useTokenStore().logout()
                 // 执行退出登录逻辑
                 uni.showToast({
                     title: '退出登录成功',
                     icon: 'success',
                 })
-                uni.navigateTo({ url: LOGIN_PAGE })
+                uni.redirectTo({ url: LOGIN_PAGE })
             }
         },
     })
