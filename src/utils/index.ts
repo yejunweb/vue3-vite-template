@@ -25,6 +25,13 @@ export const parseJSON = (json: string) => {
     }
 }
 
+/**
+ * 接口域名
+ */
+export const API_DOMAINS = {
+    DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
+}
+
 export type PageInstance = Page.PageInstance<AnyObject, object> & { $page: Page.PageInstance<AnyObject, object> & { fullPath: string } }
 
 export function getLastPage() {
@@ -134,13 +141,6 @@ export function getCurrentPageI18nKey() {
     console.log(currPage)
     console.log(currPage.style.navigationBarTitleText)
     return currPage.style?.navigationBarTitleText || ''
-}
-
-/**
- * 接口域名
- */
-export const API_DOMAINS = {
-    DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
 }
 
 /**
