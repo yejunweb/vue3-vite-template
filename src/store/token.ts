@@ -11,26 +11,30 @@ import {
 import { useUserStore } from './user'
 
 // 初始化状态
-const tokenInfoState = {
+const tokenInfoState: IAuthLoginRes = {
     token: '',
 }
 
 export const useTokenStore = defineStore(
     'token',
     () => {
-        // 定义用户信息
+        // 定义 token 信息
         const tokenInfo = ref<IAuthLoginRes>({ ...tokenInfoState })
-        // 设置用户信息
+
+        /**
+         * 设置 token 信息
+         * @param val token 信息
+         */
         const setTokenInfo = (val: IAuthLoginRes) => {
             tokenInfo.value = val
         }
 
         /**
          * 登录成功后处理逻辑
-         * @param tokenInfo 登录返回的token信息
+         * @param tokenData 登录返回的token信息
          */
-        async function _postLogin(tokenInfo: IAuthLoginRes) {
-            setTokenInfo(tokenInfo)
+        const _postLogin = async (tokenData: IAuthLoginRes) => {
+            setTokenInfo(tokenData)
             const userStore = useUserStore()
             await userStore.fetchUserInfo()
         }
@@ -64,7 +68,8 @@ export const useTokenStore = defineStore(
         }
 
         /**
-         * 退出登录 并 删除用户信息
+         * 退出登录并清除用户信息
+         * 注意：持久化由 pinia-plugin-persistedstate 自动处理
          */
         const logout = async () => {
             try {
@@ -78,7 +83,6 @@ export const useTokenStore = defineStore(
                 // 无论成功失败，都需要清除本地token信息
                 console.log('退出登录-清除用户信息')
                 tokenInfo.value = { ...tokenInfoState }
-                uni.removeStorageSync('token')
                 const userStore = useUserStore()
                 userStore.clearUserInfo()
             }
