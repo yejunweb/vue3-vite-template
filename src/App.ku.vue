@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import FgTabbar from '@/tabbar/index.vue'
-import { isPageTabbar } from './tabbar/store'
-import { currRoute } from './utils'
+import { useTheme } from '@/hooks/useTheme'
+import Tabbar from '@/tabbar/index.vue'
+import { isPageTabbar } from '@/tabbar/store'
+import { currRoute } from '@/utils'
+
+const { theme, themeVars } = useTheme({
+    // 配置主题变量、参考 ConfigProviderThemeVars
+})
 
 const isCurrentPageTabbar = ref(true)
+
 onShow(() => {
     console.log('App.ku.vue onShow', currRoute())
     const { path } = currRoute()
@@ -21,8 +27,9 @@ onShow(() => {
 
 <template>
     <view>
-        <KuRootView />
-
-        <FgTabbar v-if="isCurrentPageTabbar" />
+        <wd-config-provider :theme="theme" :theme-vars="themeVars">
+            <KuRootView />
+        </wd-config-provider>
+        <Tabbar v-if="isCurrentPageTabbar" />
     </view>
 </template>

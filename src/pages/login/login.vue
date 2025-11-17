@@ -34,9 +34,11 @@ async function doLogin() {
         <view class="text-center">
             登录页
         </view>
-        <button class="mt-4 w-40 text-center" @click="doLogin">
-            点击模拟登录
-        </button>
+        <view class="center">
+            <wd-button class="mt-4 w-40" @click="doLogin">
+                点击模拟登录
+            </wd-button>
+        </view>
     </view>
 </template>
 
