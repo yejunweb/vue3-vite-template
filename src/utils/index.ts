@@ -2,6 +2,10 @@ import type { PageMetaDatum, SubPackages } from '@uni-helper/vite-plugin-uni-pag
 import { attempt, isError } from 'lodash-es'
 import { pages, subPackages } from '@/pages.json'
 
+export const API_DOMAINS = {
+    DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
+}
+
 export const getImageUrl = (path: string) => new URL(`../assets/${path}`, import.meta.url).href
 
 export const getOSSUrl = (path: string): string => `https://shanghai-house-model.oss-accelerate.aliyuncs.com/${path}`
@@ -23,13 +27,6 @@ export const parseJSON = (json: string) => {
     } else {
         return {}
     }
-}
-
-/**
- * 接口域名
- */
-export const API_DOMAINS = {
-    DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
 }
 
 export type PageInstance = Page.PageInstance<AnyObject, object> & { $page: Page.PageInstance<AnyObject, object> & { fullPath: string } }
@@ -68,12 +65,40 @@ export function currRoute() {
     return parseUrlToObj(fullPath)
 }
 
+/**
+ * 确保解码 URL 中的百分号编码，避免出现 %2F 这样的情况
+ * @param url 需要解码的 URL
+ * @returns 解码后的 URL
+ */
 export function ensureDecodeURIComponent(url: string) {
     if (url.startsWith('%')) {
         return ensureDecodeURIComponent(decodeURIComponent(url))
     }
     return url
 }
+
+/**
+ * 路由参数转换
+ * @param params 需要转换的参数
+ * @returns 转换后的参数
+ */
+export function paramsTransform(params: Record<string, any>) {
+    return Object.entries(params || {})
+        .map(v => v.join('='))
+        .join('&')
+}
+
+/**
+ * 路由参数拼接
+ * @param url 需要拼接的 URL
+ * @param query 需要拼接的参数
+ * @returns 拼接后的 URL
+ */
+export function queryTransform(url: string, query: Record<string, any>) {
+    const queryStr = paramsTransform(query)
+    return url + (queryStr ? `?${queryStr}` : '')
+}
+
 /**
  * 解析 url 得到 path 和 query
  * 比如输入url: /pages/login/login?redirect=%2Fpages%2Fdemo%2Fbase%2Froute-interceptor
@@ -93,10 +118,11 @@ export function parseUrlToObj(url: string) {
     queryStr.split('&').forEach((item) => {
         const [key, value] = item.split('=')
         // console.log(key, value)
-        query[key] = ensureDecodeURIComponent(value) // 这里需要统一 decodeURIComponent 一下，可以兼容h5和微信y
+        query[key] = ensureDecodeURIComponent(value) // 这里需要统一 decodeURIComponent 一下，可以兼容h5和微信
     })
     return { path, query }
 }
+
 /**
  * 得到所有的需要登录的 pages，包括主包和分包的
  * 这里设计得通用一点，可以传递 key 作为判断依据，默认是 excludeLoginPath, 与 route-block 配对使用
