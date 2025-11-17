@@ -1,5 +1,29 @@
 import type { PageMetaDatum, SubPackages } from '@uni-helper/vite-plugin-uni-pages'
+import { attempt, isError } from 'lodash-es'
 import { pages, subPackages } from '@/pages.json'
+
+export const getImageUrl = (path: string) => new URL(`../assets/${path}`, import.meta.url).href
+
+export const getOSSUrl = (path: string): string => `https://shanghai-house-model.oss-accelerate.aliyuncs.com/${path}`
+
+export const getEnv = (): string => import.meta.env.MODE
+
+export const isDevMode = (): boolean => import.meta.env.DEV
+
+export const isBuildMode = (): boolean => import.meta.env.PROD
+
+export const isTestMode = (): boolean => getEnv().includes('test')
+
+export const isProdMode = (): boolean => import.meta.env.PROD && !isTestMode()
+
+export const parseJSON = (json: string) => {
+    const parsedData = attempt(JSON.parse, json)
+    if (!isError(parsedData)) {
+        return parsedData
+    } else {
+        return {}
+    }
+}
 
 export type PageInstance = Page.PageInstance<AnyObject, object> & { $page: Page.PageInstance<AnyObject, object> & { fullPath: string } }
 
