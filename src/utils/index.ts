@@ -6,7 +6,7 @@ export const API_DOMAINS = {
     DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
 }
 
-export const getImageUrl = (path: string) => new URL(`../assets/${path}`, import.meta.url).href
+export const getImageUrl = (path: string) => new URL(`../static/images/${path}`, import.meta.url).href
 
 export const getOSSUrl = (path: string): string => `https://shanghai-house-model.oss-accelerate.aliyuncs.com/${path}`
 
