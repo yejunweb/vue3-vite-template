@@ -2,9 +2,9 @@
 
 ## 项目概述
 
-**user-admin-mobile** 是一个基于 UniApp 框架开发的跨平台移动应用项目，使用 Vue 3 + TypeScript + Vite 构建。项目支持 H5、小程序（微信、支付宝等）、App（Android/iOS）多端运行。
+**vue3-vite-template** 是一个基于 UniApp 框架开发的跨平台移动应用项目，使用 Vue 3 + TypeScript + Vite 构建。项目支持 H5、小程序（微信、支付宝等）、App（Android/iOS）多端运行。
 
-- **项目名称**: user-admin-mobile
+- **项目名称**: vue3-vite-template
 - **框架版本**: unibest 4.1.0
 - **Vue 版本**: 3.4.21
 - **TypeScript**: ~5.8.0
@@ -14,7 +14,7 @@
 ## 目录结构
 
 ```
-user-admin-mobile/
+vue3-vite-template/
 ├── dist/                    # 构建输出目录
 │   ├── dev/                 # 开发环境构建产物
 │   └── build/               # 生产环境构建产物
