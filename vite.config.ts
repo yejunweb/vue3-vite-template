@@ -160,6 +160,12 @@ export default defineConfig(({ command, mode }) => {
                     // }),
                 ],
             },
+            preprocessorOptions: {
+                scss: {
+                    javascriptEnabled: true,
+                    additionalData: `@import "${path.resolve(process.cwd(), 'src/style/theme/index.scss')}";`,
+                },
+            },
         },
         resolve: {
             alias: {
