@@ -3,45 +3,45 @@
 // 如需要 throttle 功能，可 copy https://github.com/toss/es-toolkit/blob/main/src/function/throttle.ts
 
 interface DebounceOptions {
-  /**
-   * An optional AbortSignal to cancel the debounced function.
-   */
-  signal?: AbortSignal
+    /**
+     * An optional AbortSignal to cancel the debounced function.
+     */
+    signal?: AbortSignal
 
-  /**
-   * An optional array specifying whether the function should be invoked on the leading edge, trailing edge, or both.
-   * If `edges` includes "leading", the function will be invoked at the start of the delay period.
-   * If `edges` includes "trailing", the function will be invoked at the end of the delay period.
-   * If both "leading" and "trailing" are included, the function will be invoked at both the start and end of the delay period.
-   * @default ["trailing"]
-   */
-  edges?: Array<'leading' | 'trailing'>
+    /**
+     * An optional array specifying whether the function should be invoked on the leading edge, trailing edge, or both.
+     * If `edges` includes "leading", the function will be invoked at the start of the delay period.
+     * If `edges` includes "trailing", the function will be invoked at the end of the delay period.
+     * If both "leading" and "trailing" are included, the function will be invoked at both the start and end of the delay period.
+     * @default ["trailing"]
+     */
+    edges?: Array<'leading' | 'trailing'>
 }
 
 export interface DebouncedFunction<F extends (...args: any[]) => void> {
-  (...args: Parameters<F>): void
+    (...args: Parameters<F>): void
 
-  /**
-   * Schedules the execution of the debounced function after the specified debounce delay.
-   * This method resets any existing timer, ensuring that the function is only invoked
-   * after the delay has elapsed since the last call to the debounced function.
-   * It is typically called internally whenever the debounced function is invoked.
-   *
-   * @returns {void}
-   */
-  schedule: () => void
+    /**
+     * Schedules the execution of the debounced function after the specified debounce delay.
+     * This method resets any existing timer, ensuring that the function is only invoked
+     * after the delay has elapsed since the last call to the debounced function.
+     * It is typically called internally whenever the debounced function is invoked.
+     *
+     * @returns {void}
+     */
+    schedule: () => void
 
-  /**
-   * Cancels any pending execution of the debounced function.
-   * This method clears the active timer and resets any stored context or arguments.
-   */
-  cancel: () => void
+    /**
+     * Cancels any pending execution of the debounced function.
+     * This method clears the active timer and resets any stored context or arguments.
+     */
+    cancel: () => void
 
-  /**
-   * Immediately invokes the debounced function if there is a pending execution.
-   * This method executes the function right away if there is a pending execution.
-   */
-  flush: () => void
+    /**
+     * Immediately invokes the debounced function if there is a pending execution.
+     * This method executes the function right away if there is a pending execution.
+     */
+    flush: () => void
 }
 
 /**
@@ -80,87 +80,87 @@ export interface DebouncedFunction<F extends (...args: any[]) => void> {
  * controller.abort();
  */
 export function debounce<F extends (...args: any[]) => void>(
-  func: F,
-  debounceMs: number,
-  { signal, edges }: DebounceOptions = {},
+    func: F,
+    debounceMs: number,
+    { signal, edges }: DebounceOptions = {},
 ): DebouncedFunction<F> {
-  let pendingThis: any
-  let pendingArgs: Parameters<F> | null = null
+    let pendingThis: any
+    let pendingArgs: Parameters<F> | null = null
 
-  const leading = edges != null && edges.includes('leading')
-  const trailing = edges == null || edges.includes('trailing')
+    const leading = edges != null && edges.includes('leading')
+    const trailing = edges == null || edges.includes('trailing')
 
-  const invoke = () => {
-    if (pendingArgs !== null) {
-      func.apply(pendingThis, pendingArgs)
-      pendingThis = undefined
-      pendingArgs = null
-    }
-  }
-
-  const onTimerEnd = () => {
-    if (trailing) {
-      invoke()
+    const invoke = () => {
+        if (pendingArgs !== null) {
+            func.apply(pendingThis, pendingArgs)
+            pendingThis = undefined
+            pendingArgs = null
+        }
     }
 
-    // eslint-disable-next-line ts/no-use-before-define
-    cancel()
-  }
+    const onTimerEnd = () => {
+        if (trailing) {
+            invoke()
+        }
 
-  let timeoutId: ReturnType<typeof setTimeout> | null = null
-
-  const schedule = () => {
-    if (timeoutId != null) {
-      clearTimeout(timeoutId)
+        // eslint-disable-next-line ts/no-use-before-define
+        cancel()
     }
 
-    timeoutId = setTimeout(() => {
-      timeoutId = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
 
-      onTimerEnd()
-    }, debounceMs)
-  }
+    const schedule = () => {
+        if (timeoutId != null) {
+            clearTimeout(timeoutId)
+        }
 
-  const cancelTimer = () => {
-    if (timeoutId !== null) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-  }
+        timeoutId = setTimeout(() => {
+            timeoutId = null
 
-  const cancel = () => {
-    cancelTimer()
-    pendingThis = undefined
-    pendingArgs = null
-  }
-
-  const flush = () => {
-    invoke()
-  }
-
-  const debounced = function (this: any, ...args: Parameters<F>) {
-    if (signal?.aborted) {
-      return
+            onTimerEnd()
+        }, debounceMs)
     }
 
-    // eslint-disable-next-line ts/no-this-alias
-    pendingThis = this
-    pendingArgs = args
-
-    const isFirstCall = timeoutId == null
-
-    schedule()
-
-    if (leading && isFirstCall) {
-      invoke()
+    const cancelTimer = () => {
+        if (timeoutId !== null) {
+            clearTimeout(timeoutId)
+            timeoutId = null
+        }
     }
-  }
 
-  debounced.schedule = schedule
-  debounced.cancel = cancel
-  debounced.flush = flush
+    const cancel = () => {
+        cancelTimer()
+        pendingThis = undefined
+        pendingArgs = null
+    }
 
-  signal?.addEventListener('abort', cancel, { once: true })
+    const flush = () => {
+        invoke()
+    }
 
-  return debounced
+    const debounced = function (this: any, ...args: Parameters<F>) {
+        if (signal?.aborted) {
+            return
+        }
+
+        // eslint-disable-next-line ts/no-this-alias
+        pendingThis = this
+        pendingArgs = args
+
+        const isFirstCall = timeoutId == null
+
+        schedule()
+
+        if (leading && isFirstCall) {
+            invoke()
+        }
+    }
+
+    debounced.schedule = schedule
+    debounced.cancel = cancel
+    debounced.flush = flush
+
+    signal?.addEventListener('abort', cancel, { once: true })
+
+    return debounced
 }

@@ -2,17 +2,17 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 
 interface IUseRequestOptions<T> {
-  /** 是否立即执行 */
-  immediate?: boolean
-  /** 初始化数据 */
-  initialData?: T
+    /** 是否立即执行 */
+    immediate?: boolean
+    /** 初始化数据 */
+    initialData?: T
 }
 
 interface IUseRequestReturn<T, P = undefined> {
-  loading: Ref<boolean>
-  error: Ref<boolean | Error>
-  data: Ref<T | undefined>
-  run: (args?: P) => Promise<T | undefined>
+    loading: Ref<boolean>
+    error: Ref<boolean | Error>
+    data: Ref<T | undefined>
+    run: (args?: P) => Promise<T | undefined>
 }
 
 /**
@@ -24,31 +24,31 @@ interface IUseRequestReturn<T, P = undefined> {
  * @returns 返回一个对象{loading, error, data, run}，包含请求的加载状态、错误信息、响应数据和手动触发请求的函数。
  */
 export default function useRequest<T, P = undefined>(
-  func: (args?: P) => Promise<T>,
-  options: IUseRequestOptions<T> = { immediate: false },
+    func: (args?: P) => Promise<T>,
+    options: IUseRequestOptions<T> = { immediate: false },
 ): IUseRequestReturn<T, P> {
-  const loading = ref(false)
-  const error = ref(false)
-  const data = ref<T | undefined>(options.initialData) as Ref<T | undefined>
-  const run = async (args?: P) => {
-    loading.value = true
-    return func(args)
-      .then((res) => {
-        data.value = res
-        error.value = false
-        return data.value
-      })
-      .catch((err) => {
-        error.value = err
-        throw err
-      })
-      .finally(() => {
-        loading.value = false
-      })
-  }
+    const loading = ref(false)
+    const error = ref(false)
+    const data = ref<T | undefined>(options.initialData) as Ref<T | undefined>
+    const run = async (args?: P) => {
+        loading.value = true
+        return func(args)
+            .then((res) => {
+                data.value = res
+                error.value = false
+                return data.value
+            })
+            .catch((err) => {
+                error.value = err
+                throw err
+            })
+            .finally(() => {
+                loading.value = false
+            })
+    }
 
-  if (options.immediate) {
-    (run as (args: P) => Promise<T | undefined>)({} as P)
-  }
-  return { loading, error, data, run }
+    if (options.immediate) {
+        (run as (args: P) => Promise<T | undefined>)({} as P)
+    }
+    return { loading, error, data, run }
 }
