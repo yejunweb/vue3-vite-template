@@ -40,6 +40,7 @@ const httpInterceptor = {
         options.timeout = 60000 // 60s
         // 2. （可选）添加小程序端请求头标识
         options.header = {
+            Platform: 'Mobile',
             ...options.header,
         }
         // 3. 添加 token 请求头标识
