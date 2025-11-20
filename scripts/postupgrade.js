@@ -6,7 +6,7 @@ import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
 
 // 日志控制开关，设置为 true 可以启用所有日志输出
-const FG_LOG_ENABLE = true
+const LOG_ENABLE = true
 
 // 将 exec 转换为返回 Promise 的函数
 const execPromise = promisify(exec)
@@ -28,7 +28,7 @@ const dependencies = [
  * @param {string} type 日志类型 (log, error)
  */
 function log(message, type = 'log') {
-    if (FG_LOG_ENABLE) {
+    if (LOG_ENABLE) {
         if (type === 'error') {
             console.error(message)
         }

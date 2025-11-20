@@ -1,5 +1,5 @@
 import type { CustomInstanceOptions, CustomRequestOptions, IResponse } from '@/http/types'
-import { useTokenStore } from '@/store/token'
+import { useStoreUser } from '@/store/modules/user'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ResultEnum } from './tools/enum'
 
@@ -21,9 +21,9 @@ export function http<T>(options: CustomRequestOptions) {
                 const isTokenExpired = res.statusCode === 401 || code === 401
 
                 if (isTokenExpired) {
-                    const tokenStore = useTokenStore()
+                    const storeUser = useStoreUser()
                     // 清理用户信息
-                    tokenStore.logout()
+                    storeUser.logout()
                     // 切换到登录页
                     toLoginPage()
                     return reject(res)

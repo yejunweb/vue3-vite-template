@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
 import { LOGIN_PAGE } from '@/router/config'
-import { useUserStore } from '@/store'
-import { useTokenStore } from '@/store/token'
+import { useStoreUser } from '@/store/modules/user'
 
 definePage({
     style: {
@@ -10,10 +8,7 @@ definePage({
     },
 })
 
-const userStore = useUserStore()
-const tokenStore = useTokenStore()
-// 使用storeToRefs解构userInfo
-const { userInfo } = storeToRefs(userStore)
+const storeUser = useStoreUser()
 
 // 微信小程序下登录
 async function handleLogin() {
@@ -26,10 +21,10 @@ function handleLogout() {
     uni.showModal({
         title: '提示',
         content: '确定要退出登录吗？',
-        success: async (res) => {
+        success: (res) => {
             if (res.confirm) {
                 // 清空用户信息
-                await useTokenStore().logout()
+                storeUser.logout()
                 // 执行退出登录逻辑
                 uni.showToast({
                     title: '退出登录成功',
@@ -45,15 +40,15 @@ function handleLogout() {
 <template>
     <view class="profile-container">
         <view class="mt-3 break-all px-3 text-center text-green-500">
-            {{ userInfo.username ? '已登录' : '未登录' }}
+            {{ storeUser.user?.userName ? '已登录' : '未登录' }}
         </view>
         <view class="mt-3 break-all px-3">
-            {{ JSON.stringify(userInfo, null, 2) }}
+            {{ storeUser.user?.userName }}
         </view>
 
         <view class="mt-[60vh] px-3">
             <view class="m-auto w-160px text-center">
-                <button v-if="tokenStore.hasLogin" type="warn" class="w-full" @click="handleLogout">
+                <button v-if="storeUser.hasLogin" type="warn" class="w-full" @click="handleLogout">
                     退出登录
                 </button>
                 <button v-else type="primary" class="w-full" @click="handleLogin">
