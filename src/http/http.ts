@@ -5,7 +5,7 @@ import { ResultEnum } from './tools/enum'
 
 export function http<T>(options: CustomRequestOptions) {
     // 1. 返回 Promise 对象
-    return new Promise<T>((resolve, reject) => {
+    return new Promise<IResponse<T>>((resolve, reject) => {
         uni.request({
             ...options,
             dataType: 'json',
@@ -37,6 +37,7 @@ export function http<T>(options: CustomRequestOptions) {
                             icon: 'none',
                             title: responseData.msg || responseData.message || '请求错误',
                         })
+                        return reject(res)
                     }
                     return resolve(responseData)
                 }
