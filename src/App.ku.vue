@@ -30,6 +30,7 @@ onShow(() => {
         <wd-config-provider :theme="theme" :theme-vars="themeVars">
             <KuRootView />
             <wg-global-loading />
+            <wg-global-message />
         </wd-config-provider>
         <Tabbar v-if="isCurrentPageTabbar" />
     </view>

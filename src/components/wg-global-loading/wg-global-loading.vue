@@ -13,7 +13,7 @@ const { loadingOptions, currentPage } = storeToRefs(useGlobalLoading())
 
 const { close: closeGlobalLoading } = useGlobalLoading()
 
-const loading = useToast('globalLoading')
+const loading = useToast('wgGlobalLoading')
 const currentPath = getLastPage().route || ''
 
 watch(() => loadingOptions.value, (newVal) => {
@@ -29,5 +29,5 @@ watch(() => loadingOptions.value, (newVal) => {
 </script>
 
 <template>
-    <wd-toast selector="globalLoading" :closed="closeGlobalLoading" />
+    <wd-toast selector="wgGlobalLoading" :closed="closeGlobalLoading" />
 </template>

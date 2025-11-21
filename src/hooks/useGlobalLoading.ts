@@ -11,7 +11,7 @@ const defaultOptions: ToastOptions = {
     show: false,
 }
 
-export const useGlobalLoading = defineStore('global-loading', () => {
+export const useGlobalLoading = defineStore('wg-global-loading', () => {
     const loadingOptions = useUniStorage<ToastOptions>('loadingOptions', defaultOptions)
     const currentPage = useUniStorage<string>('currentPage', '')
 
