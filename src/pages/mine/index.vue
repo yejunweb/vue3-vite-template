@@ -18,20 +18,15 @@ async function handleLogin() {
 }
 
 function handleLogout() {
-    uni.showModal({
+    const message = useGlobalMessage()
+    const toast = useGlobalToast()
+    message.confirm({
         title: '提示',
-        content: '确定要退出登录吗？',
-        success: (res) => {
-            if (res.confirm) {
-                // 清空用户信息
-                storeUser.logout()
-                // 执行退出登录逻辑
-                uni.showToast({
-                    title: '退出登录成功',
-                    icon: 'success',
-                })
-                uni.redirectTo({ url: LOGIN_PAGE })
-            }
+        msg: '确定要退出登录吗？',
+        success: async () => {
+            await storeUser.logout()
+            toast.show('退出登录成功')
+            uni.redirectTo({ url: LOGIN_PAGE })
         },
     })
 }

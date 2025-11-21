@@ -80,6 +80,8 @@ const validatePhone = (val: string) => {
 const handleSubmit = async () => {
     const { valid } = await formRef.value.validate()
     if (!valid) return
+    const loading = useGlobalLoading()
+    loading.loading('登录中，请稍候...')
     api
         .login({
             ...formState,
@@ -94,6 +96,9 @@ const handleSubmit = async () => {
         })
         .catch(() => {
             storeCaptcha.getCaptchaInfo()
+        })
+        .finally(() => {
+            loading.close()
         })
 }
 </script>
