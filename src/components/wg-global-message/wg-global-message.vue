@@ -36,55 +36,53 @@ watch(() => messageOptions.value, (newVal) => {
 </script>
 
 <template>
-    <wd-message-box :custom-class="messageOptions.customClass || 'wd-message-box'" selector="wgGlobalMessage" />
+    <wd-message-box :custom-class="messageOptions.customClass || 'wg-global-message'" selector="wgGlobalMessage" />
 </template>
 
 <style lang="scss">
-.wd-message-box {
-    :deep(.wd-message-box) {
-        width: 500rpx;
+.wg-global-message {
+    width: 500rpx !important;
 
-        .wd-message-box__body {
-            padding: $space5 $space4 $space4;
-        }
+    .wd-message-box__body {
+        padding: $space5 $space4 $space4;
+    }
 
-        .wd-message-box__title {
+    .wd-message-box__title {
+        color: #2a3036;
+        font-size: 34rpx;
+        font-weight: normal;
+        line-height: $space6;
+        padding: 0;
+        margin-bottom: $space2;
+    }
+
+    .wd-message-box__content {
+        color: #2b2e33;
+        font-size: 28rpx;
+        line-height: $space5;
+    }
+
+    .wd-message-box__actions {
+        padding: 0;
+        border-top: 1px solid #e9e9e9;
+
+        > .wd-button {
+            flex: 1;
+            margin: 0;
+            height: 82rpx;
+            line-height: 82rpx;
+            border-radius: unset;
             color: #2a3036;
-            font-size: 34rpx;
-            font-weight: normal;
-            line-height: $space6;
-            padding: 0;
-            margin-bottom: $space2;
-        }
-
-        .wd-message-box__content {
-            color: #2b2e33;
             font-size: 28rpx;
-            line-height: $space5;
-        }
+            background-color: #fff;
+            border: unset;
 
-        .wd-message-box__actions {
-            padding: 0;
-            border-top: 1px solid #e9e9e9;
+            &.is-primary {
+                color: var(--wot-color-theme);
+            }
 
-            > .wd-button {
-                flex: 1;
-                margin: 0;
-                height: 82rpx;
-                line-height: 82rpx;
-                border-radius: unset;
-                color: #2a3036;
-                font-size: 28rpx;
-                background-color: #fff;
-                border: unset;
-
-                &.is-primary {
-                    color: var(--wot-color-theme);
-                }
-
-                & + .wd-button {
-                    border-left: 1px solid #e9e9e9;
-                }
+            & + .wd-button {
+                border-left: 1px solid #e9e9e9;
             }
         }
     }
