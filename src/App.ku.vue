@@ -31,6 +31,7 @@ onShow(() => {
             <KuRootView />
             <wg-global-loading />
             <wg-global-message />
+            <wg-global-toast />
         </wd-config-provider>
         <Tabbar v-if="isCurrentPageTabbar" />
     </view>
