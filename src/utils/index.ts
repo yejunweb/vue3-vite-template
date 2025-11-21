@@ -157,7 +157,7 @@ export function getAllPages(key?: string) {
     return result
 }
 
-export function getCurrentPageI18nKey() {
+export function getCurrentPageTitle() {
     const routeObj = currRoute()
     const currPage = (pages as PageMetaDatum[]).find(page => `/${page.path}` === routeObj.path)
     if (!currPage) {
