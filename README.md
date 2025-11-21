@@ -197,7 +197,6 @@ vue3-vite-template/
 - **index/index.vue**: 首页
 - **login/**: 登录和注册页面
   - `login.vue`: 登录页
-  - `register.vue`: 注册页
 - **mine/index.vue**: 个人中心页面
 
 ### 8. 样式系统
