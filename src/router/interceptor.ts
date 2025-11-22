@@ -1,15 +1,14 @@
 import { isMp } from '@uni-helper/uni-env'
 /**
- * by 菲鸽 on 2025-08-19
  * 路由拦截，通常也是登录拦截
  * 黑、白名单的配置，请看 config.ts 文件， EXCLUDE_LOGIN_PATH_LIST
  */
-import { useTokenStore } from '@/store/token'
+import { useStoreUser } from '@/store/modules/user'
 import { isPageTabbar, tabbarStore } from '@/tabbar/store'
 import { getAllPages, getLastPage, HOME_PAGE, parseUrlToObj } from '@/utils/index'
 import { EXCLUDE_LOGIN_PATH_LIST, isNeedLoginMode, LOGIN_PAGE, LOGIN_PAGE_ENABLE_IN_MP, NOT_FOUND_PAGE } from './config'
 
-export const FG_LOG_ENABLE = false
+export const LOG_ENABLE = true
 
 // 系统内部页面白名单（不需要检查路由存在性）
 const SYSTEM_INTERNAL_PATHS = [
@@ -53,12 +52,12 @@ export const navigateToInterceptor = {
         }
         let { path, query: _query } = parseUrlToObj(url)
 
-        FG_LOG_ENABLE && console.log('\n\n路由拦截器:-------------------------------------')
-        FG_LOG_ENABLE && console.log('路由拦截器 1: url->', url, ', query ->', query)
+        LOG_ENABLE && console.log('\n\n路由拦截器:-------------------------------------')
+        LOG_ENABLE && console.log('路由拦截器 1: url->', url, ', query ->', query)
         const myQuery = { ..._query, ...query }
         // /pages/route-interceptor/index?name=feige&age=30
-        FG_LOG_ENABLE && console.log('路由拦截器 2: path->', path, ', _query ->', _query)
-        FG_LOG_ENABLE && console.log('路由拦截器 3: myQuery ->', myQuery)
+        LOG_ENABLE && console.log('路由拦截器 2: path->', path, ', _query ->', _query)
+        LOG_ENABLE && console.log('路由拦截器 3: myQuery ->', myQuery)
 
         // 处理相对路径
         if (!path.startsWith('/')) {
@@ -70,7 +69,7 @@ export const navigateToInterceptor = {
 
         // 系统内部页面直接放行（不检查路由存在性，不进行登录拦截）
         if (isSystemInternalPath(path)) {
-            FG_LOG_ENABLE && console.log('系统内部页面，直接放行:', path)
+            LOG_ENABLE && console.log('系统内部页面，直接放行:', path)
             return true
         }
 
@@ -89,11 +88,11 @@ export const navigateToInterceptor = {
             return true // 明确表示允许路由继续执行
         }
 
-        const tokenStore = useTokenStore()
-        FG_LOG_ENABLE && console.log('tokenStore.hasLogin:', tokenStore.hasLogin)
+        const storeUser = useStoreUser()
+        LOG_ENABLE && console.log('storeUser.hasLogin:', storeUser.hasLogin)
 
         // 不管黑白名单，登录了就直接去吧（但是当前不能是登录页）
-        if (tokenStore.hasLogin) {
+        if (storeUser.hasLogin) {
             if (path !== LOGIN_PAGE) {
                 return true // 明确表示允许路由继续执行
             }
@@ -127,7 +126,7 @@ export const navigateToInterceptor = {
                 if (path === LOGIN_PAGE) {
                     return true // 明确表示允许路由继续执行
                 }
-                FG_LOG_ENABLE && console.log('1 isNeedLogin(白名单策略) redirectUrl:', redirectUrl)
+                LOG_ENABLE && console.log('1 isNeedLogin(白名单策略) redirectUrl:', redirectUrl)
                 uni.navigateTo({ url: redirectUrl })
                 return false // 明确表示阻止原路由继续执行
             }
@@ -138,7 +137,7 @@ export const navigateToInterceptor = {
         else {
             // 不需要登录里面的 EXCLUDE_LOGIN_PATH_LIST 表示黑名单，需要重定向到登录页
             if (judgeIsExcludePath(path)) {
-                FG_LOG_ENABLE && console.log('2 isNeedLogin(黑名单策略) redirectUrl:', redirectUrl)
+                LOG_ENABLE && console.log('2 isNeedLogin(黑名单策略) redirectUrl:', redirectUrl)
                 uni.navigateTo({ url: redirectUrl })
                 return false // 修改为false，阻止原路由继续执行
             }
@@ -152,7 +151,7 @@ export const navigateToInterceptor = {
 export const chooseLocationInterceptor = {
     invoke(options: any) {
     // 直接放行 chooseLocation 调用
-        FG_LOG_ENABLE && console.log('chooseLocation 调用，直接放行:', options)
+        LOG_ENABLE && console.log('chooseLocation 调用，直接放行:', options)
         return true
     },
 }

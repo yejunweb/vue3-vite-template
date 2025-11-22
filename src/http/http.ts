@@ -1,11 +1,11 @@
 import type { CustomInstanceOptions, CustomRequestOptions, IResponse } from '@/http/types'
-import { useTokenStore } from '@/store/token'
+import { useStoreUser } from '@/store/modules/user'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ResultEnum } from './tools/enum'
 
 export function http<T>(options: CustomRequestOptions) {
     // 1. 返回 Promise 对象
-    return new Promise<T>((resolve, reject) => {
+    return new Promise<IResponse<T>>((resolve, reject) => {
         uni.request({
             ...options,
             dataType: 'json',
@@ -21,9 +21,9 @@ export function http<T>(options: CustomRequestOptions) {
                 const isTokenExpired = res.statusCode === 401 || code === 401
 
                 if (isTokenExpired) {
-                    const tokenStore = useTokenStore()
+                    const storeUser = useStoreUser()
                     // 清理用户信息
-                    tokenStore.logout()
+                    storeUser.logout()
                     // 切换到登录页
                     toLoginPage()
                     return reject(res)
@@ -37,8 +37,9 @@ export function http<T>(options: CustomRequestOptions) {
                             icon: 'none',
                             title: responseData.msg || responseData.message || '请求错误',
                         })
+                        return reject(res)
                     }
-                    return resolve(responseData.data)
+                    return resolve(responseData)
                 }
 
                 // 处理其他错误

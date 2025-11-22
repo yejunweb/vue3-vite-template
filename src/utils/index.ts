@@ -6,7 +6,7 @@ export const API_DOMAINS = {
     DEFAULT: import.meta.env.VITE_SERVER_BASEURL,
 }
 
-export const getImageUrl = (path: string) => new URL(`../assets/${path}`, import.meta.url).href
+export const getImageUrl = (path: string) => new URL(`../static/images/${path}`, import.meta.url).href
 
 export const getOSSUrl = (path: string): string => `https://shanghai-house-model.oss-accelerate.aliyuncs.com/${path}`
 
@@ -157,7 +157,7 @@ export function getAllPages(key?: string) {
     return result
 }
 
-export function getCurrentPageI18nKey() {
+export function getCurrentPageTitle() {
     const routeObj = currRoute()
     const currPage = (pages as PageMetaDatum[]).find(page => `/${page.path}` === routeObj.path)
     if (!currPage) {
