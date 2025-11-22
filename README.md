@@ -42,12 +42,10 @@ user-admin-mobile/
 │   └── postupgrade.js          # 升级后处理脚本
 ├── src/                     # 源代码目录
 │   ├── api/                 # API 接口定义
-│   │   ├── login.ts        # 登录相关接口（旧版）
 │   │   ├── modules/        # API 模块
 │   │   │   └── auth.ts     # 认证相关接口（验证码、登录、用户信息）
 │   │   └── types/          # API 类型定义
 │   │       ├── auth.ts     # 认证相关类型
-│   │       └── login.ts    # 登录相关类型
 │   ├── components/          # 公共组件
 │   │   ├── wg-global-loading/    # 全局加载组件
 │   │   ├── wg-global-message/    # 全局消息框组件
@@ -251,7 +249,6 @@ const res = await http.get({
 ### 3. API 模块 (`src/api/`)
 
 #### 3.1 接口定义
-- **login.ts**: 登录相关 API 接口（旧版，包含 login、getUserInfo、logout）
 - **modules/auth.ts**: 认证相关接口（新版）
   - `captchaImage()`: 获取图片验证码
   - `login(data)`: 账号密码登录
@@ -259,7 +256,6 @@ const res = await http.get({
 
 #### 3.2 类型定义 (`types/`)
 - **auth.ts**: 认证相关类型定义（LoginParams、UserInfoData 等）
-- **login.ts**: 登录相关类型定义（IAuthLoginRes、IUserInfoRes 等）
 
 ### 4. Hooks (`src/hooks/`)
 
