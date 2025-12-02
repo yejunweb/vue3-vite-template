@@ -92,7 +92,9 @@ const handleSubmit = async () => {
             return storeUser.getUser()
         })
         .then(() => {
-            uni.navigateBack()
+            uni.switchTab({
+                url: '/pages/index/index',
+            })
         })
         .catch(() => {
             storeCaptcha.getCaptchaInfo()
