@@ -209,10 +209,9 @@ export const chooseLocationInterceptor = {
  */
 export const routeInterceptor = {
     install() {
-        uni.addInterceptor('navigateTo', navigateToInterceptor)
-        uni.addInterceptor('reLaunch', navigateToInterceptor)
-        uni.addInterceptor('redirectTo', navigateToInterceptor)
-        uni.addInterceptor('switchTab', navigateToInterceptor)
+        ['navigateTo', 'reLaunch', 'redirectTo', 'switchTab'].forEach((key) => {
+            uni.addInterceptor(key, navigateToInterceptor)
+        })
 
         // 添加 chooseLocation 的拦截器，确保直接放行
         uni.addInterceptor('chooseLocation', chooseLocationInterceptor)
