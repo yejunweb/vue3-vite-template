@@ -183,7 +183,8 @@ export const navigateToInterceptor = {
         }
 
         const redirectUrl = buildRedirectUrl(path, myQuery)
-        uni.navigateTo({ url: redirectUrl })
+        // 未登录访问受限页面时，重定向到登录页使用 reLaunch，避免在历史栈中保留无效页面
+        uni.reLaunch({ url: redirectUrl })
 
         return false // 明确表示阻止原路由继续执行
     },
