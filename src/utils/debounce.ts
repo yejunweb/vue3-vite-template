@@ -103,7 +103,6 @@ export function debounce<F extends (...args: any[]) => void>(
             invoke()
         }
 
-        // eslint-disable-next-line ts/no-use-before-define
         cancel()
     }
 
