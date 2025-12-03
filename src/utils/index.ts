@@ -20,6 +20,8 @@ export const isTestMode = (): boolean => getEnv().includes('test')
 
 export const isProdMode = (): boolean => import.meta.env.PROD && !isTestMode()
 
+export const isDevToolsEnabled = (): boolean => import.meta.env.VITE_APP_DEV_TOOLS_ENABLE === 'true'
+
 export const parseJSON = (json: string) => {
     const parsedData = attempt(JSON.parse, json)
     if (!isError(parsedData)) {
