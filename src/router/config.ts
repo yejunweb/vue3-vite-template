@@ -17,4 +17,5 @@ export const SYSTEM_INTERNAL_PATHS = [
     '/__uniapproute', // 路由页面
     '/__uniappfilepicker', // 文件选择器
     '/__uniappimagepicker', // 图片选择器
+    '/devTools/page/index', // 开发工具页面
 ]

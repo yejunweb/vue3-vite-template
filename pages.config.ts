@@ -21,4 +21,28 @@ export default defineUniPages({
     },
     // tabbar 的配置统一在 “./src/tabbar/config.ts” 文件中
     tabBar: tabBar as any,
+    // 注册 devTools 路由
+    subPackages: [
+        {
+            root: 'devTools/page',
+            name: 'devToolsPage',
+            pages: [
+                {
+                    path: 'index',
+                    style: {
+                        navigationStyle: 'custom',
+                        // #ifdef APP-PLUS
+                        softinputMode: 'adjustResize',
+                        backgroundColor: 'transparent',
+                        animationDuration: 1,
+                        animationType: 'none',
+                        popGesture: 'none',
+                        bounce: 'none',
+                        titleNView: false,
+                        // #endif
+                    },
+                },
+            ],
+        },
+    ],
 })

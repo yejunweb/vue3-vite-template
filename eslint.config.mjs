@@ -17,6 +17,8 @@ export default uniHelper({
         // 插件生成的文件
         'src/pages.json',
         'src/manifest.json',
+        // 忽略 devTools 目录
+        'src/devTools/**',
     ],
     // https://eslint-config.antfu.me/rules
     rules: {

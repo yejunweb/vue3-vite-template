@@ -165,6 +165,36 @@ declare global {
          */
         // eslint-disable-next-line ts/method-signature-style
         hideToast<T extends UniNamespace.HideLoadingOption = UniNamespace.HideLoadingOption>(options?: T): void
+
+        /**
+         * 开发工具对象
+         */
+        $dev: {
+            /**
+             * 打开调试弹窗
+             */
+            show: () => void
+            /**
+             * 隐藏调试弹窗
+             * @param options 可选配置
+             * @param options.navigateToUrl 关闭后跳转的页面路径
+             */
+            hide: (options?: { navigateToUrl?: string }) => void
+            /**
+             * 错误日志上报
+             * @param msg 错误信息，可以是 Error 对象或字符串
+             * @param trace 错误堆栈信息
+             * @param type 错误类型，默认为 'n'
+             * @returns 如果未启用或参数无效返回 false，否则返回 undefined
+             */
+            errorReport: (msg: Error | string, trace?: string, type?: 've' | 'vw' | 'oe' | 'n') => false | undefined
+            /**
+             * 运行日志上报
+             * @param msg 日志信息，可以是对象或字符串
+             * @returns 如果未启用或参数无效返回 false，否则返回 undefined
+             */
+            logReport: (msg: any) => false | undefined
+        }
     }
 }
 
