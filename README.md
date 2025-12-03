@@ -50,6 +50,14 @@ vue3-vite-template/
 │   │   ├── wg-global-loading/    # 全局加载组件
 │   │   ├── wg-global-message/    # 全局消息框组件
 │   │   └── wg-global-toast/      # 全局提示组件
+│   ├── devTools/            # 调试工具模块
+│   │   ├── config.js       # 调试工具配置
+│   │   ├── index.js         # 调试工具入口
+│   │   ├── core/            # 调试工具核心功能
+│   │   │   ├── components/  # 调试工具组件
+│   │   │   ├── libs/        # 调试工具工具库
+│   │   │   └── proxy/       # 调试工具代理（拦截器）
+│   │   └── page/            # 调试工具页面
 │   ├── hooks/               # Vue Composition API Hooks
 │   │   ├── useGlobalLoading.ts   # 全局加载 Hook
 │   │   ├── useGlobalMessage.ts    # 全局消息框 Hook
@@ -75,7 +83,7 @@ vue3-vite-template/
 │   │   ├── login/          # 登录注册页
 │   │   │   └── login.vue
 │   │   └── mine/           # 个人中心
-│   │       └── index.vue
+│   │       └── mine.vue
 │   ├── router/              # 路由配置
 │   │   ├── config.ts       # 路由配置（登录策略等）
 │   │   └── interceptor.ts  # 路由拦截器
@@ -162,29 +170,37 @@ vue3-vite-template/
 
 #### 1.3 路由系统 (`src/router/`)
 - **config.ts**: 
-  - 登录策略配置（黑名单/白名单）
+  - 登录策略配置（白名单策略）
   - 登录页、404 页路由定义
   - 排除登录路径配置（`EXCLUDE_LOGIN_PATH_LIST`）
+  - 系统内部页面白名单（`SYSTEM_INTERNAL_PATHS`），包括调试工具页面
   - 支持在页面中使用 `definePage({ excludeLoginPath: true })` 排除登录验证
+  - 自动从 `pages.json` 中获取配置了 `excludeLoginPath` 的页面
 - **interceptor.ts**: 路由拦截器，实现登录验证和权限控制
   - 拦截 `navigateTo`、`reLaunch`、`redirectTo`、`switchTab` 等路由方法
   - 自动处理相对路径转换
   - 检查路由是否存在，不存在则跳转到 404 页
   - 自动处理 TabBar 索引
   - 已登录用户访问登录页时自动跳转到首页或 redirect 参数指定的页面
-  - 支持系统内部页面白名单（如选择位置、文件选择器等）
+  - 支持系统内部页面白名单（如选择位置、文件选择器、调试工具等）
 
 **登录策略说明**:
-- `DEFAULT_NO_NEED_LOGIN (0)`: 黑名单策略，默认可以进入 APP，只有黑名单中的页面需要登录
-- `DEFAULT_NEED_LOGIN (1)`: 白名单策略，默认需要登录，只有白名单中的页面不需要登录
+- **当前策略**: 白名单策略（默认需要登录）
+  - 默认情况下，所有页面都需要登录才能访问
+  - 只有配置在白名单（`EXCLUDE_LOGIN_PATH_LIST`）中的页面或使用 `definePage({ excludeLoginPath: true })` 配置的页面可以免登录访问
+  - 系统内部页面（如调试工具页面 `/devTools/page/index`）自动加入白名单，无需登录即可访问
+- **白名单配置方式**:
+  1. 在 `src/router/config.ts` 中的 `EXCLUDE_LOGIN_PATH_LIST` 数组添加路径
+  2. 在页面中使用 `definePage({ excludeLoginPath: true })` 配置（推荐）
+  3. 开发环境下，会自动从 `pages.json` 中获取配置了 `excludeLoginPath` 的页面
 
 **路由拦截流程**:
-1. 检查是否为系统内部页面（直接放行）
+1. 检查是否为系统内部页面（直接放行，不检查路由存在性和登录状态）
 2. 检查路由是否存在（不存在则跳转 404）
 3. 自动设置 TabBar 索引
-4. 小程序端且不使用 H5 登录页时直接放行
-5. 已登录用户访问登录页时跳转首页
-6. 根据登录策略（黑名单/白名单）进行登录验证
+4. 已登录用户访问登录页时，根据 `redirect` 参数跳转到目标页面或首页
+5. 未登录用户访问受限页面时，重定向到登录页（使用 `reLaunch` 避免历史栈问题）
+6. 未登录用户访问白名单页面时，直接放行
 
 ### 2. HTTP 请求模块 (`src/http/`)
 
@@ -347,7 +363,7 @@ const res = await http.get({
 - **404/index.vue**: 404 错误页面
 - **index/index.vue**: 首页
 - **login/login.vue**: 登录页面
-- **mine/index.vue**: 个人中心页面
+- **mine/mine.vue**: 个人中心页面
 
 ### 8. 全局组件 (`src/components/`)
 
@@ -369,15 +385,56 @@ const res = await http.get({
 - 通过 `useGlobalToast` Hook 控制显示/隐藏
 - 支持跨页面使用，自动判断当前页面
 
-### 9. 布局系统 (`src/layouts/`)
+### 9. 调试工具模块 (`src/devTools/`)
+
+项目集成了 **UniDevTools** 调试工具（v3.8），提供完整的开发调试功能。
+
+#### 9.1 功能特性
+- **Console 日志**: 拦截和记录所有 console 日志，支持本地缓存
+- **网络请求拦截**: 拦截所有 `uni.request` 请求，记录请求和响应信息
+- **错误上报**: 自动捕获 Vue 错误、警告和运行时错误
+- **运行日志**: 记录应用运行过程中的关键日志
+- **事件总线监听**: 监听 `uni.$on` / `uni.$off` / `uni.$emit` 事件
+- **页面统计**: 统计页面访问和活跃数据
+- **存储管理**: 查看和管理本地存储数据
+- **H5 端**: 支持 Eruda 和 vConsole 注入
+- **小程序端**: 支持开启小程序调试模式
+
+#### 9.2 配置说明 (`config.js`)
+- **status**: 调试工具总开关（生产环境建议关闭）
+- **route**: 调试页面路由（默认 `/devTools/page/index`）
+- **bubble**: 调试弹窗气泡设置（生产环境建议关闭）
+- **console**: Console 日志配置（缓存大小、输出控制等）
+- **network**: 网络请求拦截配置
+- **error**: 错误拦截配置
+- **logs**: 运行日志配置
+- **uniBus**: 事件总线监听配置
+- **pageStatistics**: 页面统计配置
+
+#### 9.3 使用方式
+- **打开调试工具**: 点击页面上的调试气泡（H5/App）或使用 `uni.$dev.show()`
+- **关闭调试工具**: 使用 `uni.$dev.hide()`
+- **错误上报**: 使用 `uni.$dev.errorReport(err, trace, type)`
+- **日志上报**: 使用 `uni.$dev.logReport(msg)`
+
+#### 9.4 集成说明
+- 在 `src/main.ts` 中已自动挂载调试工具
+- 调试工具页面已加入系统内部页面白名单，无需登录即可访问
+- 支持 H5、小程序、App 多端使用
+- 生产环境建议关闭调试工具（设置 `status: false`）
+
+#### 9.5 参考文档
+- 官方文档: https://dev.api0.cn/
+
+### 10. 布局系统 (`src/layouts/`)
 
 项目使用 `@uni-helper/vite-plugin-uni-layouts` 插件实现布局系统。
 
-#### 9.1 默认布局 (`default.vue`)
+#### 10.1 默认布局 (`default.vue`)
 - 使用 `<slot />` 插槽包裹页面内容
 - 可在页面中使用 `definePage({ layout: 'default' })` 指定布局
 
-#### 9.2 使用方式
+#### 10.2 使用方式
 ```vue
 <script setup lang="ts">
 definePage({
@@ -386,21 +443,21 @@ definePage({
 </script>
 ```
 
-### 10. 样式系统
+### 11. 样式系统
 
-#### 10.1 UnoCSS
+#### 11.1 UnoCSS
 - 原子化 CSS 框架，配置在 `uno.config.ts`
 - 使用 `@uni-helper/unocss-preset-uni` 预设
 - 支持图标（Iconify，如 `i-carbon-home`）
 - 支持主题色配置
 - 在模板中直接使用类名，无需导入
 
-#### 10.2 SCSS
+#### 11.2 SCSS
 - `src/style/index.scss`: 全局样式入口（在 `main.ts` 中引入）
 - `src/style/theme/index.scss`: 主题样式（通过 Vite 配置自动注入到所有 SCSS 文件）
 - `src/style/iconfont.css`: 图标字体样式
 
-#### 10.3 uni.scss
+#### 11.3 uni.scss
 - UniApp 全局样式变量文件
 - 可在任何 SCSS 文件中使用 UniApp 提供的变量
 
@@ -757,9 +814,11 @@ info('提示信息')
 
 1. **插件执行顺序**: UniXXX 插件需要在 Uni 插件之前引入，Optimization 插件需要在 UniPages 插件之后执行
 2. **环境变量**: 环境变量文件存放在 `env/` 目录，而非根目录
-3. **登录策略**: 默认使用白名单策略（`DEFAULT_NEED_LOGIN`），需要登录才能访问
-   - 可在 `src/router/config.ts` 中修改 `LOGIN_STRATEGY` 切换策略
-   - 可在页面中使用 `definePage({ excludeLoginPath: true })` 排除登录验证
+3. **登录策略**: 默认使用白名单策略，需要登录才能访问
+   - 可在 `src/router/config.ts` 中的 `EXCLUDE_LOGIN_PATH_LIST` 添加免登录路径
+   - 可在页面中使用 `definePage({ excludeLoginPath: true })` 排除登录验证（推荐）
+   - 系统内部页面（如调试工具页面）自动加入白名单
+   - 开发环境下会自动从 `pages.json` 中获取配置了 `excludeLoginPath` 的页面
 4. **TabBar 策略**: 默认使用有缓存自定义 TabBar（`CUSTOM_TABBAR_WITH_CACHE`）
    - 可在 `src/tabbar/config.ts` 中修改 `selectedTabbarStrategy` 切换策略
 5. **原生插件**: 如需使用本地原生插件，需要在项目根目录创建 `nativeplugins` 目录，并启用 `VITE_COPY_NATIVE_RES_ENABLE` 环境变量
@@ -767,6 +826,9 @@ info('提示信息')
 7. **Pinia 激活**: 使用 `setActivePinia` 立即激活 Pinia 实例，解决 APP 端白屏问题
 8. **全局组件**: 全局组件（loading、message、toast）需要在页面中引入对应的组件才能使用
 9. **存储系统**: 项目使用 `@vueuse/core` 的 `useStorage` 而非 `pinia-plugin-persistedstate` 实现数据持久化
+10. **调试工具**: 调试工具已集成到项目中，生产环境建议关闭（修改 `src/devTools/config.js` 中的 `status: false`）
+    - 调试工具页面无需登录即可访问（已加入系统内部页面白名单）
+    - 可通过点击页面上的调试气泡或使用 `uni.$dev.show()` 打开调试工具
 
 ## 项目配置说明
 
@@ -824,6 +886,12 @@ info('提示信息')
 - 检查服务器是否支持跨域（H5 端）
 - 检查网络请求域名是否在小程序后台配置
 
+### 6. 调试工具无法打开
+- 检查 `src/devTools/config.js` 中的 `status` 是否为 `true`
+- 检查气泡配置 `bubble.status` 是否为 `true`（H5/App 端）
+- 使用 `uni.$dev.show()` 手动打开调试工具
+- 调试工具页面路径为 `/devTools/page/index`，可直接访问
+
 ## 参考文档
 
 - [UniApp 官方文档](https://uniapp.dcloud.net.cn/)
@@ -834,4 +902,5 @@ info('提示信息')
 - [@vueuse/core 文档](https://vueuse.org/)
 - [wot-design-uni 文档](https://wot-design-uni.netlify.app/)
 - [unibest 项目](https://github.com/feige996/unibest)
+- [UniDevTools 文档](https://dev.api0.cn/)
 
