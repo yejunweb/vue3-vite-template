@@ -1,4 +1,4 @@
-import * as auth from './modules/auth';
+import * as auth from './auth';
 
 export const APIS = {
     auth,
