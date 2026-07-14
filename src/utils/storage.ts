@@ -1,8 +1,6 @@
-import { computed } from 'vue';
-import type { WritableComputedRef } from 'vue';
-import { useStorage } from '@vueuse/core';
-import type { UseStorageOptions, RemovableRef } from '@vueuse/core';
-import { isDevMode } from '@src/utils';
+import { computed, type WritableComputedRef } from 'vue';
+import { useStorage, type UseStorageOptions, type RemovableRef } from '@vueuse/core';
+import { isProdMode } from '@src/utils';
 import CryptoJS from 'crypto-js';
 
 interface Option<T> extends UseStorageOptions<T> {
@@ -63,4 +61,4 @@ export function createStore(key = 'please-assign-value', initOptions?: Option<an
     };
 }
 
-export const { useLocalStorage, useSessionStorage } = createStore(import.meta.env.VITE_APP_STORAGE_KEY, { crypto: !isDevMode() });
+export const { useLocalStorage, useSessionStorage } = createStore(import.meta.env.VITE_APP_STORAGE_KEY, { crypto: isProdMode() });

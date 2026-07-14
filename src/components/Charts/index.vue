@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, markRaw } from 'vue';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 import type { ECOption } from '@src/utils/echarts';
 import echarts from '@src/utils/echarts';
 
@@ -160,5 +160,5 @@ defineExpose({
 </script>
 
 <template>
-    <div :style="{ width: '100%', height: '100%' }" ref="eChart"></div>
+    <div :style="{ width: '100%', height: '100%' }" ref="eChart" />
 </template>

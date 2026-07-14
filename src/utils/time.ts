@@ -13,3 +13,20 @@ export const formatTime = ({ time = dayjs(), format = 'YYYY-MM-DD' }: { time?: s
 export const calculateDayDiff = (startTime: dayjs.ConfigType, endTime: dayjs.ConfigType) => dayjs(startTime).diff(dayjs(endTime), 'day');
 
 export { dayjs };
+
+// 将秒数转换为 ${xx}h${xx}m${xx}s 格式
+export const formatDuration = (seconds: string | number): string => {
+    const totalSeconds = typeof seconds === 'string' ? parseInt(seconds, 10) : seconds;
+    if (isNaN(totalSeconds) || totalSeconds < 0) return '0s';
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    const parts: string[] = [];
+
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+    if (secs > 0 || parts.length === 0) parts.push(`${secs}s`);
+
+    return parts.join('');
+};
