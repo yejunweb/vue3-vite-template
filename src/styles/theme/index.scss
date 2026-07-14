@@ -1,0 +1,17 @@
+// 页面间距需遵循以 4 为最小单位原则，元素之间间距、元素高度为 4 的倍数
+$space1: var(--base-space);
+$space2: calc($space1 * 2);
+$space3: calc($space1 * 3);
+$space4: calc($space1 * 4);
+$space5: calc($space1 * 5);
+$space6: calc($space1 * 6);
+$space7: calc($space1 * 7);
+$space8: calc($space1 * 8);
+$space9: calc($space1 * 9);
+$space10: calc($space1 * 10);
+$globalSpace: $space6; // 公共间距
+
+// 常用类
+.colorMaster {
+    color: var(--color-master);
+}

@@ -1,4 +1,5 @@
 @import './reset.css';
+@import './transition';
 
 html {
     font-size: 4px; // 方便 unocss 换算，1rem = 4px unocss 是以 0.25rem 为单位
@@ -9,7 +10,10 @@ body {
 }
 
 #app {
-    min-height: 100vh;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     font-size: 14px;
     color: #333;
 
@@ -17,5 +21,67 @@ body {
         > img {
             width: 100%;
         }
+    }
+}
+
+// 自定义滚动条
+.custom-scrollbar {
+    padding-right: 6px;
+    overflow: hidden;
+
+    &:hover {
+        padding-right: 0;
+        overflow-y: scroll;
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &.horizontal {
+        padding-right: unset;
+        padding-bottom: 6px;
+
+        &:hover {
+            padding-right: unset;
+            padding-bottom: 0;
+            overflow-x: scroll;
+            overflow-y: unset;
+        }
+
+        &::-webkit-scrollbar {
+            width: unset;
+            height: 6px;
+        }
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #0000002a;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #0000004a;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background: #fff;
+    }
+}
+
+// ant-design-vue global style
+.ant-popover.unset-style-popover {
+    padding-top: 0;
+
+    .ant-popover-arrow {
+        display: none;
+    }
+
+    .ant-popover-inner {
+        padding: 0;
+        background-color: unset;
+        background-clip: unset;
+        border-radius: unset;
+        box-shadow: unset;
     }
 }

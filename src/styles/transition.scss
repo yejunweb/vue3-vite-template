@@ -1,0 +1,40 @@
+// global transition css
+
+/* scale base transition */
+.scale-base-leave-active,
+.scale-base-enter-active {
+    transition: all 0.3s ease;
+}
+
+.scale-base-enter-from,
+.scale-base-leave-to {
+    opacity: 0;
+    transform: scale(0);
+}
+
+/* fade base transition */
+.fade-base-enter-active,
+.fade-base-leave-active {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.fade-base-enter-from,
+.fade-base-leave-to {
+    opacity: 0;
+}
+
+/* fade slide transition */
+.fade-slide-leave-active,
+.fade-slide-enter-active {
+    transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.fade-slide-leave-to {
+    transform: translateX(30px);
+}
