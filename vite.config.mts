@@ -5,10 +5,12 @@ import { isEnvTrue } from './config/utils';
 
 const envDir = fileURLToPath(new URL('env', import.meta.url));
 const srcDir = fileURLToPath(new URL('./src', import.meta.url));
+
 // https://vitejs.dev/config/
 export default (configEnv: ConfigEnv): UserConfig => {
     const viteEnv = loadEnv(configEnv.mode, envDir) as ImportMetaEnv;
-    const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE, VITE_DROP_DEBUG, VITE_LISTEN_HTTPS } = viteEnv;
+    const isProdMode = configEnv.mode === 'production';
+    const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE, VITE_DROP_DEBUG, VITE_APP_API_URL, VITE_APP_API_URL_PROXY } = viteEnv;
     return {
         base: VITE_PUBLIC_PATH,
         envDir,
@@ -25,6 +27,7 @@ export default (configEnv: ConfigEnv): UserConfig => {
             exclude: [],
         },
         build: {
+            sourcemap: !isProdMode,
             target: 'es2015',
             cssTarget: 'chrome80',
             modulePreload: {
@@ -48,11 +51,25 @@ export default (configEnv: ConfigEnv): UserConfig => {
                 },
             },
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    javascriptEnabled: true,
+                    additionalData: `@import "src/styles/theme/index.scss";`,
+                },
+            },
+        },
         server: {
             port: parseInt(VITE_PORT),
             host: true,
             // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-            proxy: {},
+            proxy: {
+                [VITE_APP_API_URL_PROXY]: {
+                    target: VITE_APP_API_URL,
+                    changeOrigin: true,
+                    rewrite: path => path.replace(new RegExp(`^${VITE_APP_API_URL_PROXY}`), ''),
+                },
+            },
         },
     };
 };

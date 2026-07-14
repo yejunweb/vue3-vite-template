@@ -24,7 +24,7 @@ module.exports = {
             {
                 html: {
                     void: 'always',
-                    normal: 'never',
+                    normal: 'always',
                     component: 'always',
                 },
                 svg: 'always',
@@ -40,12 +40,7 @@ module.exports = {
                 ignores: [],
             },
         ],
-        'vue/component-tags-order': [
-            'error',
-            {
-                order: ['script', 'template', 'style'], // vue3 推荐顺序
-            },
-        ],
+        'vue/component-tags-order': 'off',
         'vue/valid-v-model': 'warn',
         'vue/no-setup-props-destructure': 'warn',
         '@typescript-eslint/no-unused-vars': 'off',

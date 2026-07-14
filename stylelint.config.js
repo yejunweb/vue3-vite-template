@@ -14,6 +14,10 @@ module.exports = {
         'selector-not-notation': null,
         'import-notation': null,
         'function-no-unknown': null,
+        // 标准 CSS 规则无法解析 SCSS 变量（如 padding: 0 $space3），会误报
+        'declaration-property-value-no-unknown': null,
+        // 改用 stylelint-scss 版本，支持 Sass 变量与 calc() 等语法
+        'scss/declaration-property-value-no-unknown': true,
         'selector-class-pattern': null,
         'property-no-unknown': [
             true,
